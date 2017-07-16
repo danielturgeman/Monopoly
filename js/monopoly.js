@@ -230,6 +230,7 @@ Monopoly.closeAndNextTurn = function(){
 Monopoly.initPopups = function(){
     $(".popup-page#intro").find("button").click(function(){
         var numOfPlayers = $(this).closest(".popup-page").find("input").val();
+        console.log(numOfPlayers);
         if (Monopoly.isValidInput("numofplayers",numOfPlayers)){
             Monopoly.createPlayers(numOfPlayers);
             Monopoly.closePopup();
@@ -318,9 +319,11 @@ Monopoly.isValidInput = function(validate,value){
             if(value > 1 && value <= 4){
                 isValid = true;
             }
-            //TODO: remove when done
-            console.log("the val " + value)
-            isValid = true;
+
+            else{
+                isValid = false;
+            }
+            
             break;
     }
 
