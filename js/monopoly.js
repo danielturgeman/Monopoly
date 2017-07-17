@@ -1,6 +1,6 @@
 var Monopoly = {};
 Monopoly.allowRoll = true;
-Monopoly.moneyAtStart = 1000;
+Monopoly.moneyAtStart = 250;
 Monopoly.doubleCounter = 0;
 
 Monopoly.init = function(){
@@ -63,6 +63,7 @@ Monopoly.rollDice = function(){
     }
     var currentPlayer = Monopoly.getCurrentPlayer();
     Monopoly.handleAction(currentPlayer,"move",result1 + result2);
+ 
 };
 
 
@@ -84,9 +85,15 @@ Monopoly.movePlayer = function(player,steps){
 
 Monopoly.handleTurn = function(){
     var player = Monopoly.getCurrentPlayer();
+    player.removeClass("smiley");
     var playerCell = Monopoly.getPlayersCell(player);
     if (playerCell.is(".available.property")){
         Monopoly.handleBuyProperty(player,playerCell);
+        player.addClass("smiley");
+    }
+    else if(playerCell.is(".property:not(.available)") && playerCell.hasClass(player.attr("id")) ){
+        player.addClass("smiley");
+        Monopoly.setNextPlayerTurn();
     }else if(playerCell.is(".property:not(.available)") && !playerCell.hasClass(player.attr("id"))){
          Monopoly.handlePayRent(player,playerCell);
     }else if(playerCell.is(".go-to-jail")){
@@ -98,6 +105,14 @@ Monopoly.handleTurn = function(){
     }else{
         Monopoly.setNextPlayerTurn();
     }
+
+   /* if(player.parent().is("unavailable")){
+        console.log(player.attr("id"));
+        if(player.attr("id") == playerCell.is(player.attr("id"))){
+
+       // player.addClass("unavailable");
+        }
+    }*/
 }
 
 Monopoly.setNextPlayerTurn = function(){
@@ -243,6 +258,7 @@ Monopoly.handleBuy = function(player,propertyCell,propertyCost){
     var playersMoney = Monopoly.getPlayersMoney(player)
     if (playersMoney < propertyCost){
         Monopoly.showErrorMsg();
+        Monopoly.playSound("grenade");
     }else{
         Monopoly.updatePlayersMoney(player,propertyCost);
         var rent = Monopoly.calculateProperyRent(propertyCost);
@@ -251,8 +267,22 @@ Monopoly.handleBuy = function(player,propertyCell,propertyCost){
                     .addClass(player.attr("id"))
                     .attr("data-owner",player.attr("id"))
                     .attr("data-rent",rent);
-        Monopoly.setNextPlayerTurn();
+                     
+                    /* if(propertyCell.is(".property:not(.available)")){
+                        if(propertyCell.attr("data-owner") == player.attr("id")){
+                player.css({"background-image" : "url('./images/happy.png')", 
+                            "background-size": "contain",
+                            "background-repeat": "none" });
+                            player.addClass("smiley"); */
+
+                    //adding smileys to owned properties if cell data owner
+                    //matches the player id, not sure how to do this in a class
+                    //without affecting all players
+                        //Monopoly.setNextPlayerTurn();
+
     }
+
+    Monopoly.setNextPlayerTurn();
 };
 
 

@@ -150,6 +150,12 @@ body{
     
 }
 
+.board .game.cell.property:not(.available) .player.smiley{
+     background-image: url(../images/happy.png);
+    background-size:contain;
+    background-repeat: none;
+}
+
 .board .cell:not(.top):not(.bottom) .title{
     height:100%;
     width:20%;
@@ -203,6 +209,12 @@ body{
     background-image:url(../images/crown.png);
     background-size:contain;
     background-position:center;
+}
+
+.game.cell.in-jail .jailed{
+    background-image: url(../images/sad.png);
+    background-size:contain;
+    background-repeat: none;
 }
 
 .board .dice.cell{
